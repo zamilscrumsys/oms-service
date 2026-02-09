@@ -1,0 +1,17 @@
+server:
+  port: 9001
+
+spring:
+  datasource:
+    url: jdbc:postgresql://user-db:5432/userdb
+    username: user
+    password: pass
+
+  jpa:
+    hibernate:
+      ddl-auto: none
+    show-sql: false
+
+logging:
+  level:
+    com.scrumsys: DEBUG

@@ -1,0 +1,38 @@
+server:
+  port: 8084
+  address: 0.0.0.0
+
+spring:
+  config:
+    activate:
+      on-profile: local
+
+  datasource:
+    url: jdbc:postgresql://localhost:5432/oms-policy
+    username: postgres
+    password: Scrumsys
+    driver-class-name: org.postgresql.Driver
+    hikari:
+      maximum-pool-size: 10
+      minimum-idle: 5
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        format_sql: true
+    show-sql: true
+
+#auth:
+#  service:
+#    url: http://localhost:8087
+
+logging:
+  level:
+    com.scrumsys.policy: DEBUG
+    com.scrumsys.policy.client: DEBUG
+    com.scrumsys.policy.config: DEBUG
+    org.springframework.web: DEBUG
+    feign: DEBUG

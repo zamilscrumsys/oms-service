@@ -1,0 +1,374 @@
+json
+{
+  "info": {
+    "_postman_id": "cb7d8e2a-524a-4c6c-9f74-f0b5219f024e",
+    "name": "Backend Microservice System",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "AUTH SERVICE",
+      "item": [
+        {
+          "name": "Login (Step 1: Request OTP)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "http://localhost:8080/api/auth/login",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "api",
+                "auth",
+                "login"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"usernameOrEmail\": \"superadmin\",\n  \"password\": \"yourPassword\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Verify OTP (Step 2: Login Complete)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "http://localhost:8080/api/auth/verify-otp",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "api",
+                "auth",
+                "verify-otp"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"usernameOrEmail\": \"superadmin\",\n  \"otp\": \"123456\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Refresh Token",
+          "request": {
+            "method": "POST",
+            "url": {
+              "raw": "http://localhost:8080/api/auth/refresh-token?refreshToken={{refreshToken}}",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "api",
+                "auth",
+                "refresh-token"
+              ],
+              "query": [
+                {
+                  "key": "refreshToken",
+                  "value": "{{refreshToken}}"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Logout",
+          "request": {
+            "method": "POST",
+            "url": {
+              "raw": "http://localhost:8080/api/auth/logout?refreshToken={{refreshToken}}",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "api",
+                "auth",
+                "logout"
+              ],
+              "query": [
+                {
+                  "key": "refreshToken",
+                  "value": "{{refreshToken}}"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Forgot Password",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "http://localhost:8080/api/auth/forgot-password",
+            "body": {
+              "mode": "raw",
+              "raw": "{ \"email\": \"super@scrumsys.com\" }"
+            }
+          }
+        },
+        {
+          "name": "Reset Password",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "http://localhost:8080/api/auth/reset-password",
+            "body": {
+              "mode": "raw",
+              "raw": "{ \"token\": \"{{resetToken}}\", \"newPassword\": \"NewPassword123\" }"
+            }
+          }
+        },
+        {
+          "name": "Google OAuth2 Init",
+          "request": {
+            "method": "GET",
+            "url": "http://localhost:8080/api/oauth2/authorization/google"
+          }
+        }
+      ]
+    },
+    {
+      "name": "USER SERVICE",
+      "item": [
+        {
+          "name": "Create User",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              }
+            ],
+            "url": "http://localhost:8080/api/users",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n \"username\":\"john\",\n \"email\":\"john@example.com\",\n \"password\":\"secret\",\n \"status\":\"ACTIVE\",\n \"superUser\":false,\n \"department\": { \"id\": 1 },\n \"roles\": [{ \"id\": 1 }]\n}"
+            }
+          }
+        },
+        {
+          "name": "Get User By ID",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              }
+            ],
+            "url": "http://localhost:8080/api/users/1"
+          }
+        },
+        {
+          "name": "List Users (Paginated)",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              }
+            ],
+            "url": "http://localhost:8080/api/users?page=0&size=10"
+          }
+        },
+        {
+          "name": "Delete User",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              }
+            ],
+            "url": "http://localhost:8080/api/users/1"
+          }
+        },
+        {
+          "name": "Create Department",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              }
+            ],
+            "url": "http://localhost:8080/api/departments",
+            "body": {
+              "mode": "raw",
+              "raw": "{ \"name\": \"Ops\", \"code\": \"OPS\", \"status\": \"ACTIVE\" }"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "RULE SERVICE",
+      "item": [
+        {
+          "name": "Create Rule",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              }
+            ],
+            "url": "http://localhost:8080/api/rules",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n \"name\":\"Transaction Limit Rule\",\n \"condition\":\"amount > 10000\",\n \"action\":\"flag\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Create Policy (DRAFT)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              },
+              {
+                "key": "X-Auth-User",
+                "value": "1"
+              }
+            ],
+            "url": "http://localhost:8080/api/policies",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n \"name\":\"High Value Policy\",\n \"description\":\"For high value transactions\",\n \"ruleIds\": [1]\n}"
+            }
+          }
+        },
+        {
+          "name": "Submit Policy",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "http://localhost:8080/api/policies/1/submit",
+            "body": {
+              "mode": "raw",
+              "raw": "{ \"userId\": 1, \"comments\": \"Ready for review\" }"
+            }
+          }
+        },
+        {
+          "name": "Review Policy",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "http://localhost:8080/api/policies/1/review",
+            "body": {
+              "mode": "raw",
+              "raw": "{ \"userId\": 2, \"comments\": \"Reviewed successfully\" }"
+            }
+          }
+        },
+        {
+          "name": "Approve Policy",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "http://localhost:8080/api/policies/1/approve",
+            "body": {
+              "mode": "raw",
+              "raw": "{ \"userId\": 3, \"comments\": \"Approved\" }"
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "variable": [
+    {
+      "key": "accessToken",
+      "value": ""
+    },
+    {
+      "key": "refreshToken",
+      "value": ""
+    }
+  ]
+}

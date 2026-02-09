@@ -1,0 +1,21 @@
+server:
+  port: 8888
+
+spring:
+  application:
+    name: config-service
+
+
+  cloud:
+    config:
+      server:
+        git:
+          uri: https://github.com/zamilscrumsys/config-repository
+          #uri: file:///D:/Project-Folder/scrumsys-wallet
+          default-label: main
+          #search-paths: /
+          #search-paths: oms-services/config-repo
+          clone-on-start: true
+
+encrypt:
+  key: ****

@@ -1,0 +1,7 @@
+target/
+config-repo/
+*.log
+*.class
+application-local.yml
+application-local.yaml
+.env

@@ -1,0 +1,125 @@
+services:
+
+  service-discovery:
+    build: ./service-discovery
+    container_name: service-discovery
+    ports:
+      - "8761:8761"
+    networks:
+      - backend
+
+  config-service:
+    build: ./config-service
+    container_name: config-service
+    ports:
+      - "8888:8888"
+    volumes:
+      - ./config-repo:/app/config-repo
+    depends_on:
+      - service-discovery
+    networks:
+      - backend
+
+  api-gateway:
+    build: ./api-gateway
+    container_name: api-gateway
+    ports:
+      - "8080:8080"
+    depends_on:
+      - service-discovery
+      - config-service
+    networks:
+      - backend
+
+  user-db:
+    image: postgres:15
+    container_name: user-db
+    environment:
+      POSTGRES_DB: userdb
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: pass
+    ports:
+      - "5433:5432"
+    volumes:
+      - user-db-data:/var/lib/postgresql/data
+    networks:
+      - backend
+
+  user-service:
+    build: ./user-service
+    container_name: user-service
+    ports:
+      - "9001:9001"
+    depends_on:
+      - user-db
+      - config-service
+    networks:
+      - backend
+
+  auth-db:
+    image: postgres:15
+    container_name: auth-db
+    environment:
+      POSTGRES_DB: authdb
+      POSTGRES_USER: auth
+      POSTGRES_PASSWORD: pass
+    ports:
+      - "5434:5432"
+    volumes:
+      - auth-db-data:/var/lib/postgresql/data
+    networks:
+      - backend
+
+  redis:
+    image: redis:7
+    container_name: redis
+    ports:
+      - "6379:6379"
+    networks:
+      - backend
+
+  auth-service:
+    build: ./auth-service
+    container_name: auth-service
+    ports:
+      - "9002:9002"
+    depends_on:
+      - auth-db
+      - redis
+      - config-service
+    networks:
+      - backend
+
+  rule-db:
+    image: postgres:15
+    container_name: rule-db
+    environment:
+      POSTGRES_DB: ruledb
+      POSTGRES_USER: rule
+      POSTGRES_PASSWORD: pass
+    ports:
+      - "5435:5432"
+    volumes:
+      - rule-db-data:/var/lib/postgresql/data
+    networks:
+      - backend
+
+  rule-service:
+    build: ./rule-service
+    container_name: rule-service
+    ports:
+      - "9003:9003"
+    depends_on:
+      - rule-db
+      - user-service
+      - config-service
+    networks:
+      - backend
+
+volumes:
+  user-db-data:
+  auth-db-data:
+  rule-db-data:
+
+networks:
+  backend:

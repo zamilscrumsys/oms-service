@@ -1,0 +1,8 @@
+server:
+  port: 9003
+
+spring:
+  datasource:
+    url: jdbc:postgresql://rule-db:5432/ruledb
+    username: rule
+    password: pass
